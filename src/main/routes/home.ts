@@ -1,16 +1,15 @@
+import * as taskController from '../controllers/taskController';
+
 import { Application } from 'express';
-import axios from 'axios';
 
 export default function (app: Application): void {
-  app.get('/', async (req, res) => {
-    try {
-      // An example of connecting to the backend (a starting point)
-      const response = await axios.get('http://localhost:4000/get-example-case');
-      console.log(response.data);
-      res.render('home', { "example": response.data });
-    } catch (error) {
-      console.error('Error making request:', error);
-      res.render('home', {});
-    }
-  });
+
+  app.get('/', taskController.taskList);
+  app.get('/task/:id', taskController.getTask);
+  app.post('/task/:id/delete', taskController.deleteTask);
+  app.post('/task/update/:id', taskController.updateTask);
+  app.get('/add-task', taskController.addForm);
+  app.post('/add-task', taskController.createTask);
+  app.get('/task/update/:id', taskController.updateForm);
+
 }

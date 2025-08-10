@@ -1,0 +1,77 @@
+{% from "govuk/components/task-list/macro.njk" import govukTaskList %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
+
+
+{% extends "template.njk" %}
+
+{% block content %}
+
+<h1 class=govuk-heading-xl>Your Task List</h1>
+
+{% if query.added %}
+  {{ govukPanel({
+    titleText: "Success",
+    html: "Your task has been added</strong>"
+  }) }}
+{% endif %}
+
+{% if query.updated %}
+  {{ govukPanel({
+    titleText: "Success",
+    html: "Your task has been updated</strong>"
+  }) }}
+{% endif %}
+
+{% if query.deleted %}
+  {{ govukPanel({
+    titleText: "Success",
+    html: "Your task has been deleted</strong>"
+  }) }}
+{% endif %}
+
+{{ govukButton({
+  text: "Add task",
+  classes: "govuk-button--start",
+  href: "/add-task"
+}) }}
+
+{% set taskItems = [] %}
+
+{% for task in tasks %}
+  {% if task.status == "COMPLETED" %}
+    {% set tagClass = "govuk-tag--green" %}
+  {% elif task.status == "IN-PROGRESS" %}
+    {% set tagClass = "govuk-tag--blue" %}
+  {% elif task.status == "PENDING" %}
+    {% set tagClass = "govuk-tag--light-blue" %}
+  {% else %}
+    {% set tagClass = "govuk-tag--light-grey" %}
+  {% endif %}
+
+  {% set taskItem = {
+    title: {
+      text: task.title
+    },
+    href: "/task/" + task.id,
+    hint: {
+      text: task.dueDate
+    },
+    status: {
+      tag: {
+        text: task.status,
+        classes: tagClass
+      }
+    }
+  } %}
+  {% set taskItems = taskItems.concat([taskItem]) %}
+{% endfor %}
+
+{{ govukTaskList({
+  idPrefix: "task-list",
+  items: taskItems
+}) }}
+
+
+{% endblock %}

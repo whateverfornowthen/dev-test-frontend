@@ -1,0 +1,77 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+
+
+{% extends "template.njk" %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "/"
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+  {% if task.id %}
+
+  <h1 class="govuk-heading-xl">{{ task.title }}</h1>
+
+    <form action="/task/update/{{ task.id }}" method="get">
+      {{ govukButton({
+        text: "Update task",
+        type: "submit"
+      }) }}
+    </form>
+
+  {{ govukTable({
+    firstCellIsHeader: true,
+    head: [
+      {
+        text: ""
+      },
+      {
+        text: ""
+      }
+    ],
+    rows: [
+      [
+        {
+          text: "Description"
+        },
+        {
+          text: task.description
+        }
+      ],
+      [
+        {
+          text: "Status"
+        },
+        {
+          text: task.status
+        }
+      ],
+      [
+        {
+          text: "Due Date"
+        },
+        {
+          text: task.dueDate
+        }
+      ]
+    ]
+  }) }}
+
+    <form action="/task/{{ task.id }}/delete" method="post">
+      {{ govukButton({
+        text: "Delete task",
+        classes: "govuk-button--warning",
+        type: "submit"
+      }) }}
+    </form>
+
+  {% endif %}
+
+{% endblock %}

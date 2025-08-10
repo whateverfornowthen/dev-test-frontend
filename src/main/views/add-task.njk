@@ -1,0 +1,86 @@
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/date-input/macro.njk" import govukDateInput %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% extends "template.njk" %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "/"
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-l">Add Task</h1>
+
+      {% if errors %}
+        {{ govukErrorSummary({
+          titleText: "There is a problem",
+          errorList: [
+            errors.title and { text: errors.title, href: "#task-title" },
+            errors.status and { text: errors.status, href: "#status" },
+            errors.due and { text: errors.due, href: "#due-date" },
+            errors.description and { text: errors.description, href: "#task-description" }
+          ] | reject("equalto", false)
+        }) }}
+      {% endif %}
+
+      <form action="/add-task" method="post" novalidate>
+
+        {{ govukInput({
+          id: "task-title",
+          name: "title",
+          classes: "govuk-input--width-10",
+          label: { text: "Title", classes: "govuk-label--m" },
+          hint: { text: "For example, Write project proposal" },
+          value: values and values.title,
+          errorMessage: errors and errors.title and { text: errors.title }
+        }) }}
+
+        {{ govukTextarea({
+          id: "task-description",
+          name: "description",
+          label: { text: "Description and further information", classes: "govuk-label--m" },
+          hint: { text: "Do not include personal or financial information, like your National Insurance number or credit card details" },
+          value: values and values.description,
+          errorMessage: errors and errors.description and { text: errors.description }
+        }) }}
+
+        {{ govukRadios({
+          idPrefix: "status",
+          name: "status",
+          fieldset: { legend: { text: "Status", classes: "govuk-fieldset__legend--m" } },
+          hint: { text: "Please select one" },
+          items: [
+            { value: "PENDING", text: "Pending", checked: (values and values.status == "PENDING") },
+            { value: "IN_PROGRESS", text: "In Progress", checked: (values and values.status == "IN_PROGRESS") },
+            { value: "COMPLETED", text: "Completed", checked: (values and values.status == "COMPLETED") }
+          ],
+          errorMessage: errors and errors.status and { text: errors.status }
+        }) }}
+
+        {{ govukDateInput({
+          id: "due-date",
+          namePrefix: "due",
+          fieldset: { legend: { text: "Due date", classes: "govuk-fieldset__legend--m" } },
+          hint: { text: "For example, 31 3 1980" },
+          items: [
+            { name: "day",   value: (dueDateParts and dueDateParts.day)   or (values and values['due-day']) },
+            { name: "month", value: (dueDateParts and dueDateParts.month) or (values and values['due-month']) },
+            { name: "year",  value: (dueDateParts and dueDateParts.year)  or (values and values['due-year']) }
+          ],
+          errorMessage: errors and errors.due and { text: errors.due }
+        }) }}
+
+        {{ govukButton({ text: "Save & Continue" }) }}
+      </form>
+    </div>
+  </div>
+{% endblock %}

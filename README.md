@@ -32,7 +32,7 @@ yarn start
 ```
 
 ### Access
-- App: [`localhost:2000`](http://localhost:3100)
+- App: [`localhost:3100`](http://localhost:3100)
 
 ---
 

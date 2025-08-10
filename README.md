@@ -1,11 +1,62 @@
-# HMCTS Dev Test Frontend
-This will be the frontend for the brand new HMCTS case management system. As a potential candidate we are leaving
-this in your hands. Please refer to the brief for the complete list of tasks! Complete as much as you can and be
-as creative as you want.
+# Dev Test Frontend
 
-To begin with, you should be able to run this by running:
-1) `yarn install`
-2) `yarn webpack`
-3) `yarn start:dev` or navigate to package.json and run the script manually
+![Frontend App](assets/frontend.png)
 
-You can change the structure however you like! 
+## Prerequisites
+
+- Node.js ≥ 18
+- Yarn 3
+- IDE with TypeScript support
+
+---
+
+## Build
+
+```bash
+yarn install
+yarn webpack
+```
+
+---
+
+## Run the Application
+
+Development mode (with live reload):
+```bash
+yarn start:dev
+```
+
+Production mode:
+```bash
+yarn start
+```
+
+### Access
+- App: [`localhost:2000`](http://localhost:3100)
+
+---
+
+## Run Tests
+
+Unit tests:
+```bash
+yarn test:unit
+```
+
+Route/controller wiring tests:
+```bash
+yarn test:routes
+```
+
+Test coverage:
+```bash
+yarn test:coverage
+```
+
+---
+
+## Further Reading
+
+- [Express.js Docs](https://expressjs.com/)
+- [GOV.UK Frontend](https://design-system.service.gov.uk/)
+- [Jest Docs](https://jestjs.io/)

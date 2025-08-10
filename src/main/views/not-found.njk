@@ -1,5 +1,14 @@
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+
 {% extends "template.njk" %}
 
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "/"
+  }) }}
+{% endblock %}
+
 {% block content %}
-  <h1 class="govuk-heading-xl">Page Not Found</h1>
+  <h1 class="govuk-heading-xl">Not Found</h1>
 {% endblock %}
